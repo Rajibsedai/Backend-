@@ -40,17 +40,19 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true,"Password is required"]
     },
-    refreshTocken: {
+    refreshToken: {
         type: String,
     }
 }, { timestamps: true });
 
-userSchema.pre("save", async function (next) {
+// we dont use here next() because in latest verison of mangoose
+//  we can use async function and it will automatically wait for the promise to resolve
+//  or reject before moving to next middleware.
+userSchema.pre("save", async function () {
     if (!this.isModified("password")) {
-        return next();
+        return;
     }
         this.password = await bcrypt.hash(this.password, 10);
-        next();
 });
 
 userSchema.methods.isPasswordCorrect = async function (password) {
