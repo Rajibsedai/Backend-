@@ -2,6 +2,10 @@ import {Router} from "express";
 import {logoutUser, registerUser} from "../controllers/user.controller.js";
 import {upload} from "../middlewares/multer.middlerware.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
+import { loginUser } from "../controllers/user.controller.js";
+import {refreshAccessToken} from "../controllers/user.controller.js"
+
+
 const router = Router();
 
 router.route("/register").post(
@@ -17,5 +21,6 @@ router.route("/login").post(loginUser);
 router.route("/logout").post(verifyJWT, logoutUser)
  //in verifyjwt we use next so that 
 // it can execute logoutuser after execution of lverifyjwt
+router.route("/refresh-token").post(refreshAccessToken)
 
 export default router;
